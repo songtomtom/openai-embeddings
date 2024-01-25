@@ -1,20 +1,11 @@
-import os
+from ast import literal_eval
 
-from dotenv import load_dotenv
-from openai import OpenAI
+import numpy as np
+import pandas as pd
 
-# Loads the .env file
-load_dotenv()
+datafile_path = "fine_food_reviews_with_embeddings_1k.csv"
 
-api_key = os.getenv("OPENAI_API_KEY")
-organization = os.getenv("OPENAI_ORG_ID")
+df = pd.read_csv(datafile_path)
+df["embedding"] = df.embedding.apply(literal_eval).apply(np.array)
 
-client = OpenAI(organization=organization, api_key=api_key)
-
-response = client.embeddings.create(
-    input="Your text string goes here",
-    model="text-embedding-ada-002",
-    
-)
-
-print(response.data[0].embedding)
+print(df["embedding"])
