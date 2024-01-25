@@ -1,3 +1,4 @@
+import os
 import textwrap as tr
 from typing import List, Optional
 
@@ -5,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import plotly.express as px
+from dotenv import load_dotenv
 from openai import OpenAI
 from scipy import spatial
 from sklearn.decomposition import PCA
@@ -12,7 +14,10 @@ from sklearn.manifold import TSNE
 from sklearn.metrics import average_precision_score, precision_recall_curve
 from tenacity import retry, stop_after_attempt, wait_random_exponential
 
-client = OpenAI()
+# Loads the .env file
+load_dotenv()
+
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"), organization=os.getenv("OPENAI_ORG_ID"))
 
 
 @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(6))
